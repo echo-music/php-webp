@@ -71,7 +71,7 @@ cwebp压缩使用的WebP格式的图像。输入格式可以是PNG，JPEG，TIFF
 -sharpness INT
 
     指定过滤的锐度（如果使用的话）。范围为0（锐度）到7（最锐利）。默认值为0。
--强大
+-strong
 
     使用强过滤（如过滤被用来感谢-f 选项）。强大的过滤功能默认是开启的。
 -nostrong
@@ -148,16 +148,9 @@ cwebp压缩使用的WebP格式的图像。输入格式可以是PNG，JPEG，TIFF
 -print_lsim
 
     计算并报告当地的相似性指标（最小误差之和并置的像素邻居之间）。
--进展
-
-    报告编码％的进度。
--安静
+-quiet
 
     不打印任何东西。
--短
-
-    只打印用于测试目的的简要信息（输出文件大小和PSNR）。
-
 例子
 
 cwebp -q 50 -lossless picture.png -o picture_lossless.webp<br>
