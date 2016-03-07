@@ -144,7 +144,8 @@ function get_img_quality($fileName)
 
 
 //调用方式
-$jpg_dir = './image/';//[准备压缩的jpg图片路径]
+//原始图片，连续用数字命名 ！如 1~10张图片,就1.jpg~10.jpg
+$jpg_dir = './image/';//[准备压缩的jpg图片路径,必须设置!] 
 //压缩出webp格式的图片
 start_multi_jpg_transform_webp('./webp', 1, '_a', 0);
 start_multi_jpg_transform_webp('./webp1', 1, '_a', 1);
