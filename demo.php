@@ -10,16 +10,55 @@ date_default_timezone_set('PRC');
 
 
 /**
- * 裁剪图片
- * @param $write_file_name [当前要裁剪的图片路径]
- * @param string $new_filename [重新裁剪的图片路径]
- * @param bool $type [裁剪的尺寸类型]
- * @param int $n [是否压缩]0 不压缩 1 压缩
- * @return int
+ * jpg压缩成webp格式
+ * @param string $dir [webp图片的存储路径]
+ * @param int $n [压缩图片的张数]
+ * @param int $prefix [图片名称的后缀]
+ * @param int $type [裁剪图片的类型]
  */
-function createImg($write_file_name, $new_filename = '', $type = false, $n = 0)
+function start_multi_jpg_transform_webp($dir = '', $n = 1, $prefix = '_a', $type = 6)
 {
-    $resource = new Imagick($write_file_name);
+    global $jpg_dir;
+    if (!is_dir($dir)) {
+        mkdir($dir, 0755);
+        chmod($dir, 0755);
+    }
+    if (strrchr($jpg_dir, '/') != '/') {
+
+        $jpg_dir = $jpg_dir . '/';
+    }
+    if (strrchr($dir, '/') != '/') {
+
+        $dir = $dir . '/';
+    }
+    for ($j = 1; $j <= $n; $j++) {
+        $file_name = $jpg_dir . $j . '.jpg';//要裁剪的图片
+        $new_jpg_path = $dir . $j . '_' . $prefix;//新的图片路径
+        createImg($file_name, $new_jpg_path . '.jpg', $type, 0);//裁剪生成jpg图片
+        //生成webp格式的图片
+        $new_q = 0;
+        $m = 0;
+        for ($i = 11; $i <= 18; ++$i) {
+            $m = $i * 5;
+            $m_q = $m / 100;//新的压缩百分比
+            $q = get_img_quality($new_jpg_path . '.jpg');//原图的质量
+            $new_q = $q * $m_q;//新的图片质量
+            //开始压缩
+            do_jpg_transform_webp($new_jpg_path . '.jpg', $new_jpg_path . '_' . $m . '.webp', $new_q);
+        }
+    }
+}
+
+
+/**
+ * @param $jpg_file_name_path [jpg图片的路径]
+ * @param string $new_jpg_filename_path [裁剪后jpg图片路径,不设置会将默认的jpg图片覆盖]
+ * @param bool $type [裁剪图片类型]
+ * @param int $is_compression
+ */
+function createImg($jpg_file_name_path, $new_jpg_filename_path = '', $type = false, $is_compression = 0)
+{
+    $resource = new Imagick($jpg_file_name_path);
     if ($type) {
         try {
             $size = $resource->getImageGeometry();
@@ -50,20 +89,20 @@ function createImg($write_file_name, $new_filename = '', $type = false, $n = 0)
                 $resource->resizeImage(32, 32, Imagick::FILTER_CATROM, 1.0, true);
             }
         } catch (Exception $e) {
-            exit_script('#500-6' . $e->getMessage());
+            echo $e->getMessage();
             exit;
         }
     }
 
     $resource->setImageCompression(Imagick::COMPRESSION_JPEG);
     $current = $resource->getImageCompressionQuality();
-    if ($n) {
+    if ($is_compression) {
         $resource->setImageCompressionQuality($current);//压缩质量
     }
-    if (!empty($new_filename)) {
-        $write_file_name = $new_filename;
+    if (!empty($new_jpg_filename_path)) {
+        $jpg_file_name_path = $new_jpg_filename_path;
     }
-    $resource->writeImage($write_file_name);
+    $resource->writeImage($jpg_file_name_path);
     $resource->clear();
     $resource->destroy();
 
@@ -76,52 +115,9 @@ function createImg($write_file_name, $new_filename = '', $type = false, $n = 0)
  * @param $webp_img_path [webp图片的真实路径]
  * @param int $q [图片的压缩质量]
  */
-function jpg_transform_webp($jpg_img_path, $webp_img_path, $q = 65)
+function do_jpg_transform_webp($jpg_img_path, $webp_img_path, $q = 65)
 {
     exec("cwebp -q {$q} {$jpg_img_path} -o $webp_img_path");
-}
-
-/**
- * jpg格式批量转换成webp格式
- * @param string $dir [存储图片的临时目录]
- * @param int $n [图片的张数]
- * @param int $w [图片的宽度]
- * @param int $type [图片的尺寸类型]
- */
-function do_jpg_transform_webp($dir = '', $n = 100, $w = 150, $type = 6)
-{
-    global $log_msg;
-    global $jpg_dir;
-    if (!is_dir($dir)) {
-        mkdir($dir, 0777);
-        chmod($dir,077)
-    }
-    for ($j = 1; $j <= $n; $j++) {
-        $filename = $jpg_dir . $j . '.jpg';//要裁剪的图片
-        $newfilename = $j . '_' . $w;//裁剪后新的图片名称
-        $new_jpg_path = $dir . '/' . $newfilename;//新的图片路径
-        $log_msg .= 'JPG:' . $newfilename . '.jpg' . PHP_EOL;
-        createImg($filename, $new_jpg_path . '.jpg', $type, 0);//裁剪生成jpg图片
-
-
-//生成webp格式的图片
-        $new_q = 0;
-        $m = 0;
-        for ($i = 11; $i <= 18; ++$i) {
-            $m = $i * 5;
-            $log_msg .= 'm:' . $m . PHP_EOL;
-            $m_q = $m / 100;//新的压缩百分比
-            $q = get_img_quality($new_jpg_path . '.jpg');//原图的质量
-            $new_q = $q * $m_q;//新的图片质量
-            $log_msg .= 'q:' . $q . PHP_EOL;
-            $log_msg .= 'm_q:' . $m_q . PHP_EOL;
-            $log_msg .= 'new_q:' . $new_q . PHP_EOL;
-            $log_msg .= 'webp:' . $newfilename . '_' . $m . '.webp' . PHP_EOL;
-//开始压缩
-            jpg_transform_webp($new_jpg_path . '.jpg', $new_jpg_path . '_' . $m . '.webp', $new_q);
-        }
-        $log_msg .= "\n" . PHP_EOL;
-    }
 }
 
 
@@ -140,25 +136,19 @@ function get_img_quality($fileName)
     if (empty($current)) {
         $current = 65;
     }
+    $resource->clear();
+    $resource->destroy();
     return $current;
 
 }
 
-/**
- * 打印日志的信息
- * @param $log_msg
- */
-
-function echo_msg($log_msg)
-{
-    global $log_file;
-
-    @file_put_contents('./a.log', $log_msg . PHP_EOL, FILE_APPEND);
-
-}
 
 //调用方式
+$jpg_dir = './image/';//[准备压缩的jpg图片路径]
+//压缩出webp格式的图片
+start_multi_jpg_transform_webp('./webp', 1, '_a', 0);
+start_multi_jpg_transform_webp('./webp1', 1, '_a', 1);
+start_multi_jpg_transform_webp('./webp2', 1, '_a', 2);
+start_multi_jpg_transform_webp('./webp3', 1, '_a', 3);
 
-$jpg_dir = './image/';//变量名称不要改变，值可以改变
-do_jpg_transform_webp('./charbar_circle', 100, 0, 0);
 
