@@ -1,5 +1,14 @@
+注意-》要想使用该DEMO
+  1. php Imagick 扩展必须安装
+  2. webp软件必须安装(linux)
 cwebp
-名称
+
+
+
+
+
+以下是webp的使用命令
+
 
 cwebp -压缩图像文件为的WebP文件
 概要
