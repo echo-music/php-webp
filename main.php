@@ -1,7 +1,6 @@
 <?php
 
 
-
 /**
  * Created by PhpStorm.
  * User: liufangting
@@ -12,4 +11,16 @@
 use src\ImageMagick;
 
 require_once "./src/ImageMagick.php";
-$ImageMagick = new ImageMagick("./image/1.jpg");
+
+//传入要裁剪的图片
+$source = "./image/1.jpg";
+$ImageMagick = new ImageMagick($source);
+
+//传入该参数,裁剪后的图片保存到该文件中
+$target = "./image/1_1.jpg";
+$ImageMagick->resizeImage($target);
+
+//将裁剪后的图片转换为webp格式
+$source = "./image/1_1.jpg";
+$target = "./image/1_1.webp";
+$ImageMagick->execImageTransformWebp($source, $target);

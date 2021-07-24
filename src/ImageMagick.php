@@ -40,6 +40,13 @@ class ImageMagick
     }
 
 
+    /**
+     * 图片裁剪
+     *
+     * @param string $target
+     * @param $resizeType
+     * @param bool $isCompression
+     */
     function resizeImage($target = '', $resizeType, $isCompression = false)
     {
         try {
@@ -87,6 +94,9 @@ class ImageMagick
     }
 
 
+    /**
+     * 图片压缩
+     */
     private function imageCompression()
     {
         $this->imagickResource->setImageCompression(Imagick::COMPRESSION_JPEG);
@@ -96,12 +106,24 @@ class ImageMagick
     }
 
 
+    /**
+     * 将图片转换为webp格式
+     *
+     * @param $source
+     * @param $target
+     * @param int $q
+     */
     function execImageTransformWebp($source, $target, $q = 65)
     {
         exec("cwebp -q {$q} {$source} -o $target");
     }
 
 
+    /**
+     * 获取图片质量
+     *
+     * @return int
+     */
     public function getImageQuality()
     {
         $this->imagickResource->setImageCompression(Imagick::COMPRESSION_JPEG);
