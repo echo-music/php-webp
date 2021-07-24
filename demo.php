@@ -153,3 +153,8 @@ start_multi_jpg_transform_webp('./webp2', 1, '_a', 2);
 start_multi_jpg_transform_webp('./webp3', 1, '_a', 3);
 
 
+//图片能裁剪
+
+//图片可转换成webp
+
+
