@@ -50,6 +50,9 @@ class ImageMagick
     function resizeImage($target = '', $resizeType, $isCompression = false)
     {
         try {
+            if(empty($this->imagickResource)){
+                throw new Exception("资源是空的");
+            }
 
             if (!in_array($resizeType, array_keys($this->resizeImageTypes))) {
                 throw new Exception("图片压缩类型为必填项");
@@ -82,11 +85,10 @@ class ImageMagick
 
             //将处理后的图片资源写入到$source文件
             $this->imagickResource->writeImage($this->source);
-            $this->imagickResource->clear();
-            $this->imagickResource->destroy();
+            
 
         } catch (Exception $e) {
-            echo $e->getMessage();
+            echo $e->getMessage(),$e->getLine();
             exit;
         }
 
@@ -128,14 +130,20 @@ class ImageMagick
     {
         $this->imagickResource->setImageCompression(Imagick::COMPRESSION_JPEG);
         $currentImageCompressionQuality = $this->imagickResource->getImageCompressionQuality();
-        $this->imagickResource->clear();
-        $this->imagickResource->destroy();
+    
         if (empty($currentImageCompressionQuality)) {
             $currentImageCompressionQuality = 65;
         }
         return $currentImageCompressionQuality;
     }
 
+
+    public function __destruct()
+    {
+    
+        $this->imagickResource->clear();
+        $this->imagickResource->destroy();
+    }
 
 
 
