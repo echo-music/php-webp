@@ -118,8 +118,9 @@ class ImageMagick
     function execImageTransformWebp($source, $target, $ratio = 75)
     {
         $currentImageCompressionQuality = $this->getImageQuality();
+       
         $currentImageCompressionQuality = $currentImageCompressionQuality*$ratio/100;
-        echo $currentImageCompressionQuality,"\n";
+        
             
         exec("cwebp -q {$currentImageCompressionQuality} {$source} -o $target");
     }
