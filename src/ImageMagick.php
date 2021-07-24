@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * Desc: 图片裁剪,图片压缩
+ * Desc: 图片裁剪,图片压缩,计算图片质量
  * User: liufangting
  * Date: 2021/7/24
  * Time: 下午1:52
@@ -138,6 +138,7 @@ class ImageMagick
     }
 
 
+    //释放资源
     public function __destruct()
     {
     
