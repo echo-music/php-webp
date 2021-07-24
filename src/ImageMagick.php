@@ -103,8 +103,8 @@ class ImageMagick
     {
         $this->imagickResource->setImageCompression(Imagick::COMPRESSION_JPEG);
 
-        $current = $this->imagickResource->getImageCompressionQuality();
-        $this->imagickResource->setImageCompressionQuality($current);
+        $currentImageCompressionQuality = $this->imagickResource->getImageCompressionQuality();
+        $this->imagickResource->setImageCompressionQuality($currentImageCompressionQuality);
     }
 
 
@@ -113,11 +113,15 @@ class ImageMagick
      *
      * @param $source   [要转换的图片地址]
      * @param $target   [转换后的图片地址] 
-     * @param int $q
+     * @param int $ratio
      */
-    function execImageTransformWebp($source, $target, $q = 65)
+    function execImageTransformWebp($source, $target, $ratio = 75)
     {
-        exec("cwebp -q {$q} {$source} -o $target");
+        $currentImageCompressionQuality = $this->getImageQuality();
+        $currentImageCompressionQuality = $currentImageCompressionQuality*$ratio/100;
+        echo $currentImageCompressionQuality,"\n";
+            
+        exec("cwebp -q {$currentImageCompressionQuality} {$source} -o $target");
     }
 
 
