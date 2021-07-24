@@ -10,6 +10,7 @@
 namespace src;
 
 
+use Exception;
 use Imagick;
 
 class ImageMagick
