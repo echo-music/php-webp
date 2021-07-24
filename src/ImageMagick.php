@@ -134,7 +134,6 @@ class ImageMagick
             $currentImageCompressionQuality = 65;
         }
         return $currentImageCompressionQuality;
-
     }
 
 
