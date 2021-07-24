@@ -27,7 +27,7 @@ $ImageMagick->resizeImage($target,1,false);
 //将裁剪后的图片转换为webp格式
 $source = "./image/1_1.jpg";
 $target = "./image/1_1.webp";
-$ImageMagick->execImageTransformWebp($source, $target,1000);
+$ImageMagick->execImageTransformWebp($source, $target,100);
 
 
 
