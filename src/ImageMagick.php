@@ -43,9 +43,9 @@ class ImageMagick
     /**
      * 图片裁剪
      *
-     * @param string $target
-     * @param $resizeType
-     * @param bool $isCompression
+     * @param string $target [要裁剪的图片地址]
+     * @param $resizeType    [裁剪类型]
+     * @param bool $isCompression [是否对图片进行压缩]
      */
     function resizeImage($target = '', $resizeType, $isCompression = false)
     {
@@ -109,8 +109,8 @@ class ImageMagick
     /**
      * 将图片转换为webp格式
      *
-     * @param $source
-     * @param $target
+     * @param $source   [要转换的图片地址]
+     * @param $target   [转换后的图片地址] 
      * @param int $q
      */
     function execImageTransformWebp($source, $target, $q = 65)
