@@ -18,9 +18,10 @@ $ImageMagick = new ImageMagick($source);
 
 //传入该参数,裁剪后的图片保存到该文件中
 $target = "./image/1_1.jpg";
-$ImageMagick->resizeImage($target);
+$ImageMagick->resizeImage($target,1,false);
 
-//将裁剪后的图片转换为webp格式
-$source = "./image/1_1.jpg";
-$target = "./image/1_1.webp";
-$ImageMagick->execImageTransformWebp($source, $target);
+// //将裁剪后的图片转换为webp格式
+// $source = "./image/1_1.jpg";
+// $target = "./image/1_1.webp";
+// $ImageMagick->execImageTransformWebp($source, $target);
+// echo "dedew";
