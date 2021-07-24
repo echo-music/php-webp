@@ -113,10 +113,13 @@ class ImageMagick
      *
      * @param $source   [要转换的图片地址]
      * @param $target   [转换后的图片地址] 
-     * @param int $ratio
+     * @param int $ratio [图片质量系数1～100]
      */
     function execImageTransformWebp($source, $target, $ratio = 75)
     {
+        if($ratio<=0 || $ratio>100){
+            throw new Exception("图片系数质量系数超出1～100范围");
+        }
         $currentImageCompressionQuality = $this->getImageQuality();
        
         $currentImageCompressionQuality = $currentImageCompressionQuality*$ratio/100;
