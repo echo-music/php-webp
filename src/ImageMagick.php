@@ -146,9 +146,6 @@ class ImageMagick
     }
 
 
-    
-
-
     //释放资源
     public function __destruct()
     {
