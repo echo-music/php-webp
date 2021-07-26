@@ -161,8 +161,8 @@ cwebp -o picture.webp -- ---picture.png
 
 
 ### 使用example
-
--- php
+```
+<?php    
 
 use src\ImageMagick;
 
@@ -184,5 +184,9 @@ $ImageMagick->resizeImage($target,1,false);
 $source = "./image/1_1.jpg";
 $target = "./image/1_1.webp";
 $ImageMagick->execImageTransformWebp($source, $target,100);
+
+?>
+
+````
 
 
