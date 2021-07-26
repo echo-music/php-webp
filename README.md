@@ -12,14 +12,13 @@
 ### 三、cwebp命令参数说明
 以下是webp的使用命令
 
-cwebp -压缩图像文件为的WebP文件
-概要
+>cwebp -压缩图像文件为的WebP文件
+#### 概要
 
-cwebp [选项] INPUT_FILE -o output_file.webp
-描述
-
-cwebp压缩使用的WebP格式的图像。输入格式可以是PNG，JPEG，TIFF的WebP或生在Y'CbCr样品。
-选项
+>cwebp [选项] INPUT_FILE -o output_file.webp
+#### 描述
+>cwebp压缩使用的WebP格式的图像。输入格式可以是PNG，JPEG，TIFF的WebP或生在Y'CbCr样品。
+#### 选项
 
 基本的选项是：
 
