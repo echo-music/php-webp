@@ -1,6 +1,6 @@
 <?php 
 
-
+/*将裁剪后的图片转换成webp格式*/
 use src\ImageMagick;
 
 require_once "../src/ImageMagick.php";

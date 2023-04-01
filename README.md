@@ -1,15 +1,90 @@
+## 一、背景
+
+```
+我们公司有一款社交产品，用户可以随便上传相册，图片的格式为jgp，用户量很少的时候，还好。
+当用户量达到百万级千万极的时候，图片的上传和查看非常消耗流量。那么有没有占用空间小，上传查看
+消耗的流量小的图片格式呢？那么webp格式的图片是很好的选择。
+
+同时我们希望将jpg图片转成webp格式之前需求将jpg格式图片进行裁剪，那这里我们使用ImageMagick对
+图片进行裁剪，之后再用cwep命令将裁剪后的图片进行转换。
+
+好了，接下来我们介绍cwebp，ImageMagick的基本概念和使用。
+```
+
+## 二、基础知识
+### 1、什么是webp?
+```
+    WebP格式，谷歌（google）开发的一种旨在加快图片加载速度的图片格式。图片压缩体积大约只有JPEG的2/3，并能节省大量的服务器带宽资源和数据空间。Facebook Ebay等知名网站已经开始测试并使用WebP格式。
+WebP 在各大互联网公司已经使用得很多了，国外的有 Google（自家的东西肯定要用啦，Chrome Store 甚至已全站使用 WebP）、Facebook 和 ebay，国内的有淘宝、腾讯和美团等。
+
+Webp优势：
+.更优的图像数据压缩算法
+.更小的图片体积
+.肉眼识别无差异的图像质量
+.无损和有损的压缩模式
+.Alpha 透明以及动画的特性
+```
+### 2、什么是ImageMagick简
+```
+    ImageMagick是一套功能强大、稳定而且开源的工具集和开发包，可以用来读、写和处理超过89种基本格式的图片文件，包括流行的TIFF、JPEG、GIF、 PNG、PDF以及PhotoCD等格式。
+利用ImageMagick，你可以根据web应用程序的需要动态生成图片, 还可以对一个(或一组)图片进行改变大小、旋转、锐化、减色或增加特效等操作，并将操作的结果以相同格式或其它格式保存，
+对图片的操作，即可以通过命令行进行，也可以用C/C++、Perl、Java、PHP、Python或Ruby编程来完成。同时ImageMagick提供了一个高质量的2D工具包，部分支持SVG。
+ImageMagic的主要精力集中在性能，减少bug以及提供稳定的API和ABI上。
+```
+### 3、cwebp命令
+``
+    cwebp（英文全拼：compress WebP）命令用于将 JPEG、PNG 或 TIFF 格式的图片编码成 WebP 格式。
+WebP 格式是谷歌在 2010 年推出的新一代图片格式，旨在加快图片加载速度。图片压缩体积大约只有 JPEG 的2/3，
+能节省大量的服务器宽带资源和数据空间。WebP 既支持有损压缩也支持无损压缩，相较编码 JPEG 文件，编码同样质量的 WebP 文件需要占用更多的计算资源。
+``
+
+## 三、快速入门
+### 1、环境搭建
+```
 注意-》要想使用该DEMO
-  1. php Imagick 扩展必须安装
-  2. webp软件必须安装(linux)
-cwebp
+1. linux,unix
+2. php imagick扩展安装
+3. webp软件必须安装(linux) cwebp
+```
+
+### 2、开始使用
+```
+<?php
 
 
+/**
+ * Created by PhpStorm.
+ * User: liufangting
+ * Date: 2021/7/24
+ * Time: 下午4:36
+ */
+
+use src\ImageMagick;
+
+require_once "./src/ImageMagick.php";
 
 
+//传入要裁剪的图片
+$source = "./image/1.jpg";
+$ImageMagick = new ImageMagick($source);
 
+//查询当前图片的质量
+$num = $ImageMagick->getImageQuality();
+
+//传入该参数,裁剪后的图片保存到该文件中
+$target = "./image/1_1.jpg";
+$ImageMagick->resizeImage($target,1,false);
+
+//将裁剪后的图片转换为webp格式
+$source = "./image/1_1.jpg";
+$target = "./image/1_1.webp";
+$ImageMagick->execImageTransformWebp($source, $target,100);
+```
+[请查看更多案例](https://github.com/echo-music/php-webp/tree/master/example)
+
+### cwebp知识扩展
+```
 以下是webp的使用命令
-
-
 cwebp -压缩图像文件为的WebP文件
 概要
 
@@ -167,4 +242,4 @@ cwebp -q 70 picture_with_alpha.png -o picture_with_alpha.webp<br>
 cwebp -sns 70 -f 50 -size 60000 picture.png -o picture.webp<br>
 cwebp -o picture.webp -- ---picture.png
 
-
+```

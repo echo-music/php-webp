@@ -1,6 +1,6 @@
 <?php 
 
-
+/*获取图片质量*/
 use src\ImageMagick;
 
 require_once "../src/ImageMagick.php";

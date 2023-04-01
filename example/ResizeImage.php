@@ -1,7 +1,6 @@
 <?php 
 
-
-
+/*图片裁剪*/
 use src\ImageMagick;
 
 require_once "../src/ImageMagick.php";
